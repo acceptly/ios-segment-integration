@@ -44,7 +44,7 @@ pod 'Segment-Batch/StaticLibWorkaround'
 
 You'll also need to change your import:  
 
-```obj
+```objc
 #import "SEGBatchIntegrationFactory.h"
 ```
 
