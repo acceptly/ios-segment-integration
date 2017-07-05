@@ -1,0 +1,32 @@
+PODS:
+  - Analytics (3.0.7)
+  - Batch (1.9.0)
+  - Expecta (1.0.5)
+  - Segment-Batch (0.1.0):
+    - Analytics (~> 3.0.0)
+    - Segment-Batch/Standard (= 0.1.0)
+  - Segment-Batch/Standard (0.1.0):
+    - Analytics (~> 3.0.0)
+    - Batch (~> 1.9)
+  - Specta (1.0.6)
+
+DEPENDENCIES:
+  - Analytics
+  - Expecta
+  - Segment-Batch (from `../`)
+  - Specta
+
+EXTERNAL SOURCES:
+  Segment-Batch:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  Analytics: b342fb4f43fa4f97ca6f4358b44d3295217ba294
+  Batch: 2f9a6b194de713e094074ea99c4e0b4b357d304b
+  Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
+  Segment-Batch: ac28c5eca96ed42c363b00f9dc6f520895395110
+  Specta: f506f3a8361de16bc0dcf3b17b75e269072ba465
+
+PODFILE CHECKSUM: 20946dc8868d1a1f6159a6809e39649b1bed830e
+
+COCOAPODS: 1.2.1

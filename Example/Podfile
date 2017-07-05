@@ -1,0 +1,13 @@
+#use_frameworks!
+
+target 'Segment-Batch_Example' do
+  pod 'Segment-Batch', :path => '../'
+  pod 'Analytics'
+
+  target 'Segment-Batch_Tests' do
+    inherit! :search_paths
+
+    pod 'Specta'
+  pod 'Expecta'
+  end
+end
