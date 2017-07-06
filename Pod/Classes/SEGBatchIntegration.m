@@ -23,6 +23,8 @@ NSString *const SEGBatchIntegrationSettingsAdvancedDeviceInformation = @"canUseA
                                              selector:@selector(applicationDidFinishLaunching)
                                                  name:UIApplicationDidFinishLaunchingNotification
                                                object:nil];
+    
+    setenv("BATCH_PLUGIN_VERSION", [@"Segment/1.0" cStringUsingEncoding:NSUTF8StringEncoding], 1);
 }
 
 + (BOOL)enableAutomaticStart
