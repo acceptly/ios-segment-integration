@@ -2,7 +2,9 @@
 
 #ifdef __OBJC__
 
-  @import Specta;
-  @import Expecta;
+  #import <Specta/Specta.h>
+  #import <Expecta/Expecta.h>
+  #import <OCMock/OCMock.h>
+  #import <Segment-Batch/SEGBatchIntegration.h>
 
 #endif

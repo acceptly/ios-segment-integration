@@ -1,13 +1,16 @@
 #use_frameworks!
 
+platform :ios, '8.0'
+
 target 'Segment-Batch_Example' do
   pod 'Segment-Batch', :path => '../'
-  pod 'Analytics'
+end
 
-  target 'Segment-Batch_Tests' do
-    inherit! :search_paths
+target 'Segment-Batch_Tests' do
+  inherit! :search_paths
 
-    pod 'Specta'
+  pod 'Segment-Batch', :path => '../'
+  pod 'Specta'
   pod 'Expecta'
-  end
+  pod 'OCMock', '~> 3.4'
 end

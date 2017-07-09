@@ -84,7 +84,7 @@ NSString *const SEGBatchIntegrationSettingsAdvancedDeviceInformation = @"canUseA
     self = [super init];
     if (self) {
         eventNameSnakeCaseRegexp = [NSRegularExpression regularExpressionWithPattern:@"(?<!^|[A-Z])[A-Z]" options:0 error:nil];
-        eventNameSlugifyRegexp = [NSRegularExpression regularExpressionWithPattern:@"^a-zA-Z0-9" options:0 error:nil];
+        eventNameSlugifyRegexp = [NSRegularExpression regularExpressionWithPattern:@"[^a-zA-Z0-9]" options:0 error:nil];
         eventNameDoubleUnderscoreRegexp = [NSRegularExpression regularExpressionWithPattern:@"_+" options:0 error:nil];
     }
     return self;
@@ -96,7 +96,7 @@ NSString *const SEGBatchIntegrationSettingsAdvancedDeviceInformation = @"canUseA
         return nil;
     }
     
-    NSMutableString *mutableName;
+    NSMutableString *mutableName = [name mutableCopy];
     
     [eventNameSnakeCaseRegexp replaceMatchesInString:mutableName
                                              options:0
