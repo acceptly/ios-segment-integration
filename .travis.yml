@@ -9,4 +9,4 @@ before_install:
 
 script:
   - pod lib lint --use-libraries --allow-warnings
-  - make xctest
+  - make test
