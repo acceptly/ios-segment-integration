@@ -28,7 +28,7 @@
 
 - (NSString *)key
 {
-    return @"Batch.com";
+    return @"Batch";
 }
 
 @end

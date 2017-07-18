@@ -1,5 +1,5 @@
 #import "SEGBatchIntegration.h"
-
+#import <Analytics/SEGAnalyticsUtils.h>
 #import <Batch/Batch.h>
 
 @implementation SEGBatchIntegration
@@ -68,14 +68,19 @@ NSString *const SEGBatchIntegrationSettingsAdvancedDeviceInformation = @"canUseA
         id canUseAdvertisingID = settings[SEGBatchIntegrationSettingsIDFA];
         if ([canUseAdvertisingID isKindOfClass:[NSNumber class]] && [canUseAdvertisingID boolValue] == NO) {
             [Batch setUseIDFA:NO];
+            SEGLog(@"[Batch setUseIDFA:NO];");
+
         }
         
         id canUseAdvancedDeviceInformation = settings[SEGBatchIntegrationSettingsAdvancedDeviceInformation];
         if ([canUseAdvancedDeviceInformation isKindOfClass:[NSNumber class]] && [canUseAdvancedDeviceInformation boolValue] == NO) {
             [Batch setUseAdvancedDeviceInformation:NO];
+            SEGLog(@"[Batch setUseAdvancedDeviceInformation:NO];");
+
         }
         
         [Batch startWithAPIKey:(NSString*)apiKey];
+        SEGLog(@"[Batch startWithAPIKey:%@];", apiKey);
     }
 }
 
@@ -125,6 +130,7 @@ NSString *const SEGBatchIntegrationSettingsAdvancedDeviceInformation = @"canUseA
     double amount = [self amountFromTransaction:payload];
     if (amount > 0) {
         [BatchUser trackTransactionWithAmount:amount];
+        SEGLog(@"[BatchUser trackTransactionWithAmount:d%];", amount);
     }
 }
 
@@ -168,6 +174,7 @@ NSString *const SEGBatchIntegrationSettingsAdvancedDeviceInformation = @"canUseA
     BatchUserDataEditor *editor = [BatchUser editor];
     [editor setIdentifier:payload.userId];
     [editor save];
+    SEGLog(@"[BatchUser %@];", editor);
 }
 
 - (void)track:(SEGTrackPayload *)payload
@@ -179,6 +186,7 @@ NSString *const SEGBatchIntegrationSettingsAdvancedDeviceInformation = @"canUseA
             title = nil;
         }
         [BatchUser trackEvent:eventName withLabel:title data:payload.properties];
+        SEGLog(@"[BatchUser trackEvent:%@ withLabel:%@ data:%@];", eventName, title, payload.properties);
     }
     [self trackTransactionIfAny:payload];
 }
@@ -186,6 +194,7 @@ NSString *const SEGBatchIntegrationSettingsAdvancedDeviceInformation = @"canUseA
 - (void)screen:(SEGScreenPayload *)payload
 {
     [BatchUser trackEvent:@"SEGMENT_SCREEN" withLabel:payload.name];
+    SEGLog(@"[BatchUser trackEvent:SEGMENT_SCREEN withLabel:%@];", payload.name);
 }
 
 - (void)group:(SEGGroupPayload *)payload

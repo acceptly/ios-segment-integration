@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '8.0'
   s.requires_arc = true
   
-  s.dependency 'Analytics', '~> 3.0.0'
+  s.dependency 'Analytics', '~> 3.0'
   s.default_subspec = 'Standard'
 
   s.subspec 'Standard' do |std|
