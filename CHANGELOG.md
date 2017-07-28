@@ -9,7 +9,7 @@ Version 1.0.1 *(2017/07/28)*
     * Change integration key
 
 
-Version 1.0.0 *(2017/07/11)*
+Version 0.1.0 *(2017/07/11)*
 -------------------------------------------  
 
     * Initial release
