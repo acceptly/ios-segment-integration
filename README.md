@@ -48,6 +48,8 @@ You'll also need to change your import:
 #import "SEGBatchIntegrationFactory.h"
 ```
 
+If that still does not work, you will have to open your finder on `<your_project_path>/Pods/Segment-Batch/Pod/Classes` and drag&drop the classes and headers into your project. You can then put them in a group.  
+
 ## Disabling configuration and start handling
 
 If you'd like to disable the remote configuration and control yourself Batch's settings and when startWithApiKey is called, you can tell the segment integration to only worry about Analytics:
