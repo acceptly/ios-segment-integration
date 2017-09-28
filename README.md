@@ -1,7 +1,7 @@
 # Batch Segment Integration
 
-[![Version](https://img.shields.io/cocoapods/v/Segment-google-analytics.svg?style=flat)](http://cocoapods.org/pods/Segment-batch)
-[![License](https://img.shields.io/cocoapods/l/Segment-google-analytics.svg?style=flat)](http://cocoapods.org/pods/Segment-batch)
+[![Version](https://img.shields.io/cocoapods/v/Segment-Batch.svg?style=flat)](http://cocoapods.org/pods/Segment-batch)
+[![License](https://img.shields.io/cocoapods/l/Segment-Batch.svg?style=flat)](http://cocoapods.org/pods/Segment-batch)
 
 Batch.com integration for analytics-ios.
 
