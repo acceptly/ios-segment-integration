@@ -65,22 +65,24 @@ NSString *const SEGBatchIntegrationSettingsAdvancedDeviceInformation = @"canUseA
             return;
         }
         
-        id canUseAdvertisingID = settings[SEGBatchIntegrationSettingsIDFA];
-        if ([canUseAdvertisingID isKindOfClass:[NSNumber class]] && [canUseAdvertisingID boolValue] == NO) {
-            [Batch setUseIDFA:NO];
-            SEGLog(@"[Batch setUseIDFA:NO];");
-
-        }
-        
-        id canUseAdvancedDeviceInformation = settings[SEGBatchIntegrationSettingsAdvancedDeviceInformation];
-        if ([canUseAdvancedDeviceInformation isKindOfClass:[NSNumber class]] && [canUseAdvancedDeviceInformation boolValue] == NO) {
-            [Batch setUseAdvancedDeviceInformation:NO];
-            SEGLog(@"[Batch setUseAdvancedDeviceInformation:NO];");
-
-        }
-        
-        [Batch startWithAPIKey:(NSString*)apiKey];
-        SEGLog(@"[Batch startWithAPIKey:%@];", apiKey);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            id canUseAdvertisingID = settings[SEGBatchIntegrationSettingsIDFA];
+            if ([canUseAdvertisingID isKindOfClass:[NSNumber class]] && [canUseAdvertisingID boolValue] == NO) {
+                [Batch setUseIDFA:NO];
+                SEGLog(@"[Batch setUseIDFA:NO];");
+                
+            }
+            
+            id canUseAdvancedDeviceInformation = settings[SEGBatchIntegrationSettingsAdvancedDeviceInformation];
+            if ([canUseAdvancedDeviceInformation isKindOfClass:[NSNumber class]] && [canUseAdvancedDeviceInformation boolValue] == NO) {
+                [Batch setUseAdvancedDeviceInformation:NO];
+                SEGLog(@"[Batch setUseAdvancedDeviceInformation:NO];");
+                
+            }
+            
+            [Batch startWithAPIKey:(NSString*)apiKey];
+            SEGLog(@"[Batch startWithAPIKey:%@];", apiKey);
+        });
     }
 }
 
