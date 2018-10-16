@@ -11,7 +11,7 @@ Batch is the leading mobile engagement & push notification suite engineered for 
 
 # Requirements
  - iOS 8+
- - Xcode 8
+ - Xcode 9
 
 # Installation
 CocoaPods (recommended)
@@ -21,7 +21,7 @@ pod 'Batch'
 ```
 
 Manual  
- - [Download the SDK](https://batch.com/download#/Android)
+ - [Download the SDK](https://batch.com/download/ios)
  - Drag and drop the framework into your project
  - Add `libsqlite3` and Batch to `Linked Frameworks and Libraries` in your project settings
  - Add `-ObjC` in `Other Build Flags`
