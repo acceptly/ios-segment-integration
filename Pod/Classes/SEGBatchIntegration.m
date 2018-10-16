@@ -187,8 +187,8 @@ NSString *const SEGBatchIntegrationSettingsAdvancedDeviceInformation = @"canUseA
         if (![title isKindOfClass:[NSString class]]) {
             title = nil;
         }
-        [BatchUser trackEvent:eventName withLabel:title data:payload.properties];
-        SEGLog(@"[BatchUser trackEvent:%@ withLabel:%@ data:%@];", eventName, title, payload.properties);
+        [BatchUser trackEvent:eventName withLabel:title];
+        SEGLog(@"[BatchUser trackEvent:%@ withLabel:%@];", eventName, title);
     }
     [self trackTransactionIfAny:payload];
 }
