@@ -20,7 +20,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'Standard' do |std|
     std.source_files = 'Pod/Classes/**/*'
-    std.dependency 'Batch', '~> 1.9'
+    std.dependency 'Batch', '~> 1.13'
   end
 
   s.subspec 'StaticLibWorkaround' do |workaround|
