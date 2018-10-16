@@ -6,6 +6,19 @@
 
 SpecBegin(IntegrationSpecs)
 
+void (^waitForMainThreadLoop)(XCTestCase*) = ^(XCTestCase* testCase){
+    // Since the integration schedules async work on the main thread, we have
+    // to perform a little dance to correctly test the behaviour
+    // To work around this, we schedule something to run on the main thread
+    // AFTER other work has been submitted, and wait for our dummy
+    // task to finish
+    XCTestExpectation *expectation = [testCase expectationWithDescription:@"Wait for a main thread loop run"];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [expectation fulfill];
+    });
+    [testCase waitForExpectations:@[expectation] timeout:3.0];
+};
+
 describe(@"Batch's segment integration", ^{
 
     __block id batchUserMock;
@@ -155,6 +168,8 @@ describe(@"Batch's integration factory", ^{
         
         [SEGBatchIntegration startWithSettings:settings];
         
+        waitForMainThreadLoop(self);
+        
         OCMVerifyAll(batchMock);
     });
     
@@ -202,6 +217,8 @@ describe(@"Batch's integration factory", ^{
         OCMStub([userDefaults standardUserDefaults]).andReturn(userDefaults);
         [SEGBatchIntegration saveSettings:@{}];
         
+        waitForMainThreadLoop(self);
+        
         OCMVerify([userDefaults setObject:[OCMArg isNotNil] forKey:@"SEGBatchIntegrationSettings"]);
     });
     
@@ -215,10 +232,11 @@ describe(@"Batch's integration factory", ^{
         [[NSNotificationCenter defaultCenter] postNotificationName:UIApplicationDidFinishLaunchingNotification
                                                             object:nil];
         
+        waitForMainThreadLoop(self);
+        
         OCMVerifyAll(userDefaults);
         OCMVerify([batchMock startWithAPIKey:@"foobar"]);
     });
 });
 
 SpecEnd
-
