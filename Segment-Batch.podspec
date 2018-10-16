@@ -14,6 +14,7 @@ Pod::Spec.new do |s|
 
   s.ios.deployment_target = '8.0'
   s.requires_arc = true
+  s.static_framework = true
   
   s.dependency 'Analytics', '~> 3.0'
   s.default_subspec = 'Standard'
@@ -21,14 +22,5 @@ Pod::Spec.new do |s|
   s.subspec 'Standard' do |std|
     std.source_files = 'Pod/Classes/**/*'
     std.dependency 'Batch', '~> 1.13'
-  end
-
-  s.subspec 'StaticLibWorkaround' do |workaround|
-    # Exactly like https://github.com/segment-integrations/analytics-ios-integration-google-analytics/blob/master/Segment-GoogleAnalytics.podspec
-    # For users who are unable to bundle static libraries as dependencies
-    # you can choose this subspec, but be sure to include the following in your Podfile:
-    # pod 'Batch'
-    # Please manually add the following files preserved by Cocoapods to your xcodeproj file
-    workaround.preserve_paths = 'Pod/Classes/**/*'
   end
 end
