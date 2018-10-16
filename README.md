@@ -29,26 +29,18 @@ SEGAnalyticsConfiguration *config = [SEGAnalyticsConfiguration configurationWith
 [SEGAnalytics setupWithConfiguration:config];
 ```
 
-### Workaround for projects unable to use the static library
+Or, in Swift:
 
-If you've got a Swift project or simply require "use_frameworks!" in your Podfile, you will not be able to use the standard pod.
+```swift
+@import Segment_Batch
+[...]
 
-You will need to use the "StaticLibWorkaround" subspec, and add Batch as a dependency.  
-
-Your podfile should look like:  
-
-```ruby
-pod 'Batch'
-pod 'Segment-Batch/StaticLibWorkaround'
+let segConfig = SEGAnalyticsConfiguration(writeKey: "MySegmentWriteKey")
+segConfig.use(SEGBatchIntegrationFactory.instance())
+SEGAnalytics.setup(with: segConfig)
 ```
 
-You'll also need to change your import:  
-
-```objc
-#import "SEGBatchIntegrationFactory.h"
-```
-
-If that still does not work, you will have to open your finder on `<your_project_path>/Pods/Segment-Batch/Pod/Classes` and drag&drop the classes and headers into your project. You can then put them in a group.  
+>Note: If you previously used the "StaticLibWorkaround" subspec, please use the standard spec from now on (Cocoapods 1.4.0 is required). The workaround is no longer needed.
 
 ## Disabling configuration and start handling
 
