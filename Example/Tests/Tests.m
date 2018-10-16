@@ -22,13 +22,13 @@ describe(@"Batch's segment integration", ^{
     it(@"can track a 'track' call", ^{
         [batchUserMock setExpectationOrderMatters:YES];
         
-        OCMExpect([batchUserMock trackEvent:@"TEST_EVENT" withLabel:@"label" data:[OCMArg isNotNil]]);
-        OCMExpect([batchUserMock trackEvent:@"TEST_EVENT_TOO_LONG_AAAAAAAAAA" withLabel:[OCMArg isNil] data:[OCMArg isNotNil]]);
-        OCMExpect([batchUserMock trackEvent:@"TEST_TRANSACTION" withLabel:[OCMArg isNil] data:[OCMArg isNotNil]]);
+        OCMExpect([batchUserMock trackEvent:@"TEST_EVENT" withLabel:@"label"]);
+        OCMExpect([batchUserMock trackEvent:@"TEST_EVENT_TOO_LONG_AAAAAAAAAA" withLabel:[OCMArg isNil]]);
+        OCMExpect([batchUserMock trackEvent:@"TEST_TRANSACTION" withLabel:[OCMArg isNil]]);
         OCMExpect([batchUserMock trackTransactionWithAmount:1.234500]);
-        OCMExpect([batchUserMock trackEvent:@"TEST_TRANSACTION" withLabel:[OCMArg isNil] data:[OCMArg isNotNil]]);
+        OCMExpect([batchUserMock trackEvent:@"TEST_TRANSACTION" withLabel:[OCMArg isNil]]);
         OCMExpect([batchUserMock trackTransactionWithAmount:1.234600]);
-        OCMExpect([batchUserMock trackEvent:@"TEST_TRANSACTION" withLabel:[OCMArg isNil] data:[OCMArg isNotNil]]);
+        OCMExpect([batchUserMock trackEvent:@"TEST_TRANSACTION" withLabel:[OCMArg isNil]]);
         OCMExpect([batchUserMock trackTransactionWithAmount:1.234700]);
         
         
