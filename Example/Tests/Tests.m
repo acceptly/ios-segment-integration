@@ -35,20 +35,35 @@ describe(@"Batch's segment integration", ^{
     it(@"can track a 'track' call", ^{
         [batchUserMock setExpectationOrderMatters:YES];
         
-        OCMExpect([batchUserMock trackEvent:@"TEST_EVENT" withLabel:@"label"]);
+        NSDictionary *expectedDataDict = @{@"foo": @"bar", @"int": @(2)};
+        NSDictionary *transactionExpectedDataDict1 = @{@"total": @(1.2345)};
+        NSDictionary *transactionExpectedDataDict2 = @{@"revenue": @(1.2346)};
+        NSDictionary *transactionExpectedDataDict3 = @{@"value": @(1.2347)};
+        
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        
+        OCMExpect([batchUserMock trackEvent:@"TEST_EVENT" withLabel:@"label" data:expectedDataDict]);
         OCMExpect([batchUserMock trackEvent:@"TEST_EVENT_TOO_LONG_AAAAAAAAAA" withLabel:[OCMArg isNil]]);
-        OCMExpect([batchUserMock trackEvent:@"TEST_TRANSACTION" withLabel:[OCMArg isNil]]);
+        OCMExpect([batchUserMock trackEvent:@"TEST_TRANSACTION" withLabel:[OCMArg isNil] data:transactionExpectedDataDict1]);
         OCMExpect([batchUserMock trackTransactionWithAmount:1.234500]);
-        OCMExpect([batchUserMock trackEvent:@"TEST_TRANSACTION" withLabel:[OCMArg isNil]]);
+        OCMExpect([batchUserMock trackEvent:@"TEST_TRANSACTION" withLabel:[OCMArg isNil] data:transactionExpectedDataDict2]);
         OCMExpect([batchUserMock trackTransactionWithAmount:1.234600]);
-        OCMExpect([batchUserMock trackEvent:@"TEST_TRANSACTION" withLabel:[OCMArg isNil]]);
+        OCMExpect([batchUserMock trackEvent:@"TEST_TRANSACTION" withLabel:[OCMArg isNil] data:transactionExpectedDataDict3]);
         OCMExpect([batchUserMock trackTransactionWithAmount:1.234700]);
         
+#pragma clang diagnostic pop
         
         SEGTrackPayload *p = [[SEGTrackPayload alloc] initWithEvent:@"TEST_EVENT"
-                                                         properties:@{@"title": @"label"}
+                                                         properties:@{@"title": @"label", @"foo": @"bar", @"int": @(2), @"date": [NSDate date]}
                                                             context:@{}
                                                        integrations:@{}];
+        [integration track:p];
+        
+        p = [[SEGTrackPayload alloc] initWithEvent:@"TEST_EVENT"
+                                        properties:@{@"title": @"label"}
+                                           context:@{}
+                                      integrations:@{}];
         [integration track:p];
         
         p = [[SEGTrackPayload alloc] initWithEvent:@"Test Event Too Long_Aaaaaaaaaaaaaaaaaaaa"

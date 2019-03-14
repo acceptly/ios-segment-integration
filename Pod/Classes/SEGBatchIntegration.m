@@ -181,15 +181,40 @@ NSString *const SEGBatchIntegrationSettingsAdvancedDeviceInformation = @"canUseA
 
 - (void)track:(SEGTrackPayload *)payload
 {
+    NSString *titleKey = @"title";
     NSString *eventName = [self formatEventName:payload.event];
+    
     if (eventName && [eventName length] > 0) {
-        NSString *title = payload.properties[@"title"];
+        NSString *title = payload.properties[titleKey];
         if (![title isKindOfClass:[NSString class]]) {
             title = nil;
         }
-        [BatchUser trackEvent:eventName withLabel:title];
-        SEGLog(@"[BatchUser trackEvent:%@ withLabel:%@];", eventName, title);
+        
+        NSMutableDictionary *data = [[NSMutableDictionary alloc] init];
+        NSDictionary *properties = payload.properties;
+        if (properties != nil) {
+            for (NSString *key in properties) {
+                if (![key isEqualToString:titleKey]) {
+                    NSObject *value = payload.properties[key];
+                    if ([value isKindOfClass:[NSString class]] || [value isKindOfClass:[NSNumber class]]) {
+                        [data setValue:value forKey:key];
+                    }
+                }
+            }
+        }
+        
+        if ([data count] == 0) {
+            [BatchUser trackEvent:eventName withLabel:title];
+            SEGLog(@"[BatchUser trackEvent:%@ withLabel:%@];", eventName, title);
+        } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+            [BatchUser trackEvent:eventName withLabel:title data:data];
+#pragma clang diagnostic pop
+            SEGLog(@"[BatchUser trackEvent:%@ withLabel:%@ and data: %@];", eventName, title, data);
+        }
     }
+    
     [self trackTransactionIfAny:payload];
 }
 
