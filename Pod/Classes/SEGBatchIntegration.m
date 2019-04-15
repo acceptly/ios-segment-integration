@@ -175,6 +175,9 @@ NSString *const SEGBatchIntegrationSettingsAdvancedDeviceInformation = @"canUseA
 {
     BatchUserDataEditor *editor = [BatchUser editor];
     [editor setIdentifier:payload.userId];
+    [payload.traits enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+        [editor setAttribute:obj forKey:key];
+    }];
     [editor save];
     SEGLog(@"[BatchUser %@];", editor);
 }
