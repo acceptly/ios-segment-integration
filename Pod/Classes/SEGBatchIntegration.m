@@ -7,6 +7,9 @@
     NSRegularExpression *eventNameSnakeCaseRegexp;
     NSRegularExpression *eventNameSlugifyRegexp;
     NSRegularExpression *eventNameDoubleUnderscoreRegexp;
+    NSRegularExpression *eventKeySnakeCaseRegexp;
+    NSRegularExpression *eventKeySlugifyRegexp;
+    NSRegularExpression *eventKeyDoubleUnderscoreRegexp;
 }
 
 BOOL SEGBatchIntegrationEnableAutomaticStart = true;
@@ -93,6 +96,9 @@ NSString *const SEGBatchIntegrationSettingsAdvancedDeviceInformation = @"canUseA
         eventNameSnakeCaseRegexp = [NSRegularExpression regularExpressionWithPattern:@"(?<!^|[A-Z])[A-Z]" options:0 error:nil];
         eventNameSlugifyRegexp = [NSRegularExpression regularExpressionWithPattern:@"[^a-zA-Z0-9]" options:0 error:nil];
         eventNameDoubleUnderscoreRegexp = [NSRegularExpression regularExpressionWithPattern:@"_+" options:0 error:nil];
+        eventKeySnakeCaseRegexp = [NSRegularExpression regularExpressionWithPattern:@"(?<!^|[A-Z])[A-Z]" options:0 error:nil];
+        eventKeySlugifyRegexp = [NSRegularExpression regularExpressionWithPattern:@"[^a-zA-Z0-9]" options:0 error:nil];
+        eventKeyDoubleUnderscoreRegexp = [NSRegularExpression regularExpressionWithPattern:@"_+" options:0 error:nil];
     }
     return self;
 }
@@ -103,6 +109,36 @@ NSString *const SEGBatchIntegrationSettingsAdvancedDeviceInformation = @"canUseA
         return nil;
     }
     
+    NSMutableString *mutableName = [name mutableCopy];
+
+    [eventNameSnakeCaseRegexp replaceMatchesInString:mutableName
+                                             options:0
+                                               range:NSMakeRange(0, [mutableName length])
+                                        withTemplate:@"_$0"];
+
+    [eventNameSlugifyRegexp replaceMatchesInString:mutableName
+                                           options:0
+                                             range:NSMakeRange(0, [mutableName length])
+                                      withTemplate:@"_"];
+
+    [eventNameDoubleUnderscoreRegexp replaceMatchesInString:mutableName
+                                                    options:0
+                                                      range:NSMakeRange(0, [mutableName length])
+                                               withTemplate:@"_"];
+
+    // We don't need to take Unicode into account as we're down to single char characters
+    NSRange range = {0, MIN([mutableName length], 30)};
+    name = [mutableName substringWithRange:range];
+
+    return [name uppercaseString];
+}
+
+- (NSString*)formatKeyName:(NSString*)name
+{
+    if (!name) {
+        return nil;
+    }
+
     NSMutableString *mutableName = [name mutableCopy];
     
     [eventNameSnakeCaseRegexp replaceMatchesInString:mutableName
@@ -193,14 +229,15 @@ NSString *const SEGBatchIntegrationSettingsAdvancedDeviceInformation = @"canUseA
         NSMutableDictionary *data = [[NSMutableDictionary alloc] init];
         NSDictionary *properties = payload.properties;
         if (properties != nil) {
-            for (NSString *key in properties) {
+            [properties enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
                 if (![key isEqualToString:titleKey]) {
-                    NSObject *value = payload.properties[key];
-                    if ([value isKindOfClass:[NSString class]] || [value isKindOfClass:[NSNumber class]]) {
-                        [data setValue:value forKey:key];
+                    if ([obj isKindOfClass:[NSString class]] || [obj isKindOfClass:[NSNumber class]]) {
+                        NSString *formattedKey = [self formatKeyName:key];
+                        [data setValue:obj forKey:formattedKey];
                     }
                 }
-            }
+                *stop = ([data count] == 10);
+            }];
         }
         
         if ([data count] == 0) {
