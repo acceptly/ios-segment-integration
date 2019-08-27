@@ -233,14 +233,15 @@ NSString *const SEGBatchIntegrationSettingsAdvancedDeviceInformation = @"canUseA
         NSMutableDictionary *data = [[NSMutableDictionary alloc] init];
         NSDictionary *properties = payload.properties;
         if (properties != nil) {
-            for (NSString *key in properties) {
+            [properties enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
                 if (![key isEqualToString:titleKey]) {
-                    NSObject *value = payload.properties[key];
-                    if ([value isKindOfClass:[NSString class]] || [value isKindOfClass:[NSNumber class]]) {
-                        [data setValue:value forKey:key];
+                    if ([obj isKindOfClass:[NSString class]] || [obj isKindOfClass:[NSNumber class]]) {
+                        NSString *formattedKey = [self formatKeyName:key];
+                        [data setValue:obj forKey:formattedKey];
                     }
                 }
-            }
+                *stop = ([data count] == 10);
+            }];
         }
         
         if ([data count] == 0) {
