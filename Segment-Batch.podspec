@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   s.requires_arc = true
   s.static_framework = true
   
-  s.dependency 'Analytics', '~> 3.0'
+  s.dependency 'Analytics', '~> 4.0'
   s.default_subspec = 'Standard'
 
   s.subspec 'Standard' do |std|
